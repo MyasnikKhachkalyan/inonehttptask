@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html ng-app="serv">
+<head>
+    <title>Task4</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script>    
+        let serv = angular.module('serv', []);
+        serv.config(function($httpProvider){ 
+            $httpProvider.defaults.useXDomain = true;
+            $httpProvider.defaults.headers.common["Accept"] = "application/json";
+            $httpProvider.defaults.headers.common["Content-Type"] = "application/json";
+            $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+
+        });
+        serv.service('myServ', ['$http', '$q', function($http, $q) {
+                // this.myFunc = function () {
+                //     var deferred = $q.defer();
+                //     setTimeout(function() {
+                //         $http.get('https://content.guardianapis.com/search?format=json&show-fields=headline,thumbnail&order-by=newest&api-key=test').
+                //         then(function(response) {
+                //             console.log(response);
+                //             deferred.resolve(response.data.response.results);
+                //         }, function(response) {
+
+                //             console.log('error');
+                //             deferred.reject(response);
+                //         });
+                //     }, 1000);
+// 
+//                     return deferred.promise;
+//                 }     
+                this.postFunc = function(data){
+                    var deferred = $q.defer();
+                        $http.post('http://cardadmin-valer.azurewebsites.net/token', data)
+                    .then(function (response) {
+                        deferred.resolve(response);
+                        console.log("Post Data Submitted Successfully!");
+
+                        }, function (response) {
+                            deferred.reject(response);
+                            console.log("nope");
+                    });
+
+                    return deferred.promise;
+                }
+            }
+        ]);
+        
+        serv.controller('servCTRL', function ($scope, myServ){
+           
+     
+            $scope.submit = function(myForm){
+                $scope.data =  "grant_type=password&username=" + $scope.email + "&password=" + $scope.password + "&client_id=webApp" ;
+                if(myForm.$valid){
+                    promise = myServ.postFunc($scope.data);
+                    promise.then(
+                    function(data) {
+                        console.log('done')
+                    },
+                    function(reason) {
+                        console.log(reason);
+                    });
+                }
+                console.log($scope.data);
+                
+            }
+        });
+
+    </script>
+</head>
+<body ng-app="serv" ng-controller="servCTRL">
+    <form name="myForm">
+        <div style="top: 50%;
+        left: 50%;
+        width:20em;
+        height:25em;
+        margin-top: -9em; /*set to a negative number 1/2 of your height*/
+        margin-left: -15em; /*set to a negative number 1/2 of your width*/
+        border: 1px solid #ccc;
+        background-color: #f3f3f3;
+        position: absolute;
+    ">
+                <h3 style="
+                text-align: center;
+                font-size: 60px;
+                font-weight: lighter;
+                margin-bottom: 25px;
+                ">Log In</h3>
+                <div style="margin-bottom: 15px" >
+                
+                    <input type="email"  placeholder="Email"  ng-model="email"
+                
+                style="background-color: #FFFFFF;
+                border: 1px solid #e5e6e7;
+                color: #444;
+                display: block;
+                padding: 6px 12px;
+                transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+                width: 92%;
+                font-size: 14px;" required autofocus>
+
+                </div>
+                <div style="margin-bottom: 15px"    >
+
+                    <input type="password" placeholder="Password" ng-model="password"
+                    style="background-color: #FFFFFF;
+                    border: 1px solid #e5e6e7;
+                    color: #444;
+                    display: block;
+                    padding: 6px 12px;
+                    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+                    width: 92%;
+                    font-size: 14px;" required>
+
+                </div>
+                <input type="submit" ng-click="submit(myForm)" value="Submit" 
+                style="background-color: #3e63695d;
+                border-color: #3e63695d;
+                color: #fff;
+                font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif ;
+                font-size: 14px;
+                text-shadow: 0px 0px 3px #868686;
+                width: 100%
+                "/>
+                
+        </div>
+    </form>
+</body>
+</html>
