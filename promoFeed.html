@@ -1,0 +1,25 @@
+<div>
+    <div>
+      <a ng-href="#!/addnew"><button type="submit">ADD</button></a>
+      <div style="float: right;">
+        <input ng-model="search.title" type="text"/>:Search
+      </div> 
+    </div>
+    <div ng-repeat="n in promoFeed |  filter:search" style="margin-top: 60px; display: block; border-bottom: 4px dotted grey">
+      <div style=" float:right;">
+        <a ng-href="#!/edit"><button type="submit" ng-click="editPageInit(n)" >Edit</button></a>
+        <button type="submit" ng-click="removeNews(n)">Delete</button>
+      </div>
+      <div style="display: flex;
+      flex-direction: row; width:80%">
+        <img  ng-src="{{n.url}}" onerror="this.src = 'https://jlfarchitects.com/wp-content/uploads/2015/03/img-placeholder.jpg';" width="250" height="250"/>
+        <div style="margin-left: 50px;">
+          <h2>{{n.title}}</h2>
+          <p>{{n.description}}</p>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+</div>  

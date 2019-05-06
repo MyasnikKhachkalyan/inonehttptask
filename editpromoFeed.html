@@ -1,0 +1,12 @@
+<div>
+    <div style="padding:50px">
+
+
+        Title: <input ng-model="newTitle" type="text"/>
+        ImgURL: <input  accept="image/*"  onchange="angular.element(this).scope().imageUploadEdit(event)" type="file"/>
+        Description: <input ng-model="newDesc"  type="text"/>
+
+    <a href="#!/"><button ng-click="editingNews()">EditNEWS</button></a> 
+
+    </div>
+</div>
